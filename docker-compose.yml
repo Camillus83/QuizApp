@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: python /quiz/manage.py runserver 0.0.0.0:8080
+    volumes:
+      - .:/quiz
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+volumes:
+  postgres_data:
+
+
