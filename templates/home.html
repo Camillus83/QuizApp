@@ -1,14 +1,17 @@
 {% extends '_base.html' %}
-
+{% load static %}
 {% block title %}Homepage | QuizApp {% endblock title %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hi {{user.username}}!</p>
-<a href="{% url 'logout' %}">Log Out</a>
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
-<a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
+
+<div class="description">
+    <h1>Welcome to the <b>Quiz App</b></h1>
+    <p>Whether you need to create an online quiz for practise or just for fun, use this app!<br>
+        Create own quiz by simple interface or work with existing one!</p>
+    {% if not user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'signup' %}" role="button">Sign Up</a>
+    {% endif %}
+</div>
+
 {% endblock content %}

@@ -1,0 +1,67 @@
+body {
+    padding: 0;
+    margin: 0;
+    background: #333333;
+}
+
+.navbar {
+    background: #383838;
+}
+
+.nav-link,
+.navbar-brand {
+    color: #fff;
+    cursor: pointer;
+}
+
+.nav-link {
+    margin-right: 1em !important;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+.description {
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+}
+
+.description h1 {
+    color: #fcfcfc;
+}
+
+.description p {
+    color: rgb(209, 209, 209);
+    font-size: 1.3rem;
+    line-height: 1.5;
+}
+
+.container {
+    flex-wrap: nowrap;
+}
+
+.login_form {
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    color: #fff
+}
+
+.signup_form {
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    color: #fff
+}

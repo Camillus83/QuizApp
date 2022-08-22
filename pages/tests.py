@@ -1,5 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
+from accounts.forms import CustomUserCreationForm
 
 from pages.views import HomePageView
 

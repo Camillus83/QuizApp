@@ -1,11 +1,14 @@
 {% extends '_base.html' %}
+{% load static %}
 {% block title %}Log In | QuizApp{% endblock title %}
 
 {% block content %}
-<h2>Log In</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log In</button>
-</form>
+<div class="login_form">
+    <h2>Log In</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Log In</button>
+    </form>
+</div>
 {% endblock content %}
