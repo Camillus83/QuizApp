@@ -16,7 +16,7 @@ class HomepageTests(SimpleTestCase):
         self.assertTemplateUsed(self.response, "home.html")
 
     def test_homepage_correct_html(self):
-        self.assertContains(self.response, "QuizApp Homepage")
+        self.assertContains(self.response, "Homepage | QuizApp")
 
     def test_homepage_url_resolves_homepageview(self):
         view = resolve("/")
