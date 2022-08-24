@@ -2,24 +2,28 @@ from django.shortcuts import render
 from django.db.models import Q
 from .models import Quiz
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class QuizListView(ListView):
+class QuizListView(LoginRequiredMixin, ListView):
     model = Quiz
     template_name = "quiz/quiz_list.html"
     context_object_name = "quiz_list"
+    login_url = "account_login"
 
 
-class QuizDetailView(DetailView):
+class QuizDetailView(LoginRequiredMixin, DetailView):
     model = Quiz
     template_name = "quiz/quiz_detail.html"
     context_object_name = "quiz"
+    login_url = "account_login"
 
 
-class SearchResultsListView(ListView):
+class SearchResultsListView(LoginRequiredMixin, ListView):
     model = Quiz
     template_name = "quiz/search_results.html"
     context_object_name = "quiz_list"
+    login_url = "account_login"
 
     def get_queryset(self):
         query = self.request.GET.get("q")
@@ -28,10 +32,11 @@ class SearchResultsListView(ListView):
         )
 
 
-class MyQuizesListView(ListView):
+class MyQuizesListView(LoginRequiredMixin, ListView):
     model = Quiz
     template_name = "quiz/my_quizes.html"
     context_object_name = "quiz_list"
+    login_url = "account_login"
 
     def myquiz_queryset(self):
         query = self.request.GET.get("q")
