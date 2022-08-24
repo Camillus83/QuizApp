@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
     # LOCAL
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
@@ -156,5 +158,6 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

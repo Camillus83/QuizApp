@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block title %}Homepage | QuizApp {% endblock title %}
 
 {% block content %}
@@ -9,8 +10,12 @@
     <h1>Welcome to the <b>Quiz App</b></h1>
     <p>Whether you need to create an online quiz for practise or just for fun, use this app!<br>
         Create own quiz by simple interface or work with existing one!</p>
+
     {% if not user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'account_signup' %}" role="button">Sign Up</a>
+    <p>
+        Don't have an account?
+    </p><a class="btn btn-primary" href="{% url 'account_signup' %}" role="button">Sign Up</a>
+    <a class="btn btn-primary" href="{% provider_login_url 'github' %}" role="button">Log in with Github</a>
     {% endif %}
 </div>
 
