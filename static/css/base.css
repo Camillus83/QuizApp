@@ -63,14 +63,11 @@ body {
 .quiz_detail {
 
     text-align: center;
-    color: #fff
+    color: #fff;
 }
 
-.card {
-    margin: 0 auto;
-    /* Added */
-    float: none;
-    /* Added */
-    margin-bottom: 10px;
-    /* Added */
+.search-header {
+    color: rgb(209, 209, 209);
+    font-size: 2.8rem;
+    line-height: 1.5;
 }

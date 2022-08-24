@@ -1,13 +1,11 @@
 {% extends '_base.html' %}
 {% load static %}
-{% block title %}Quiz List | QuizApp{% endblock title %}
+{% block title %}Search Results | QuizApp{% endblock title %}
 
 {% block content %}
-<br>
-<form class="d-flex" action="{% url 'search_results' %}" method="get">
-    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-\ label="Search">
-    <button class="btn btn-outline-success" type="submit">Search</button>
-</form>
+<div class="search-header">
+    <h>Search Results</h>
+</div>
 <br>
 {% for quiz in quiz_list %}
 <div class="card text-center">
@@ -22,5 +20,4 @@
 </div>
 <br>
 {% endfor %}
-
 {% endblock content %}
