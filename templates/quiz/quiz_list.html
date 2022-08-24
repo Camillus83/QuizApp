@@ -4,8 +4,13 @@
 
 {% block content %}
 {% for quiz in quiz_list %}
-<div>
-    <h2><a href="{{ quiz.get_absolute_url }}">{{ quiz.title }}</a></h2>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ quiz.title }}</h5>
+        <p class="card-text">{{ quiz.short_description }} </p>
+        <a href="#" class="btn btn-primary">Attempt Quiz</a>
+    </div>
 </div>
 {% endfor %}
+
 {% endblock content %}
