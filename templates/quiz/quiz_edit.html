@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{quiz.title}} Edit | QuizApp {% endblock title %}
+
+{% block content %}
+<h1> Edit </h1>
+<div class="edit_quiz">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-info ml-2" type="submit">Update</button>
+    </form>
+</div>
+{% endblock content %}

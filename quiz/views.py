@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.db.models import Q
+
+
 from .models import Quiz
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    UpdateView,
+    DeleteView,
+)
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
@@ -41,3 +48,20 @@ class MyQuizesListView(LoginRequiredMixin, ListView):
     def myquiz_queryset(self):
         query = self.request.GET.get("q")
         return Quiz.objects.filter(Q(author__username__icontains=query))
+
+
+class QuizUpdateView(LoginRequiredMixin, UpdateView):
+    model = Quiz
+    fields = (
+        "title",
+        "short_description",
+        "resolution_time",
+        "number_of_questions",
+        "author",
+    )
+    template_name = "quiz/quiz_edit.html"
+    success_url = ""
+
+
+class QuizDeleteView(LoginRequiredMixin, DeleteView):
+    pass
