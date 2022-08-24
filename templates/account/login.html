@@ -1,14 +1,16 @@
 {% extends '_base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}Log In | QuizApp{% endblock title %}
 
 {% block content %}
 <div class="login_form">
-    <h2>Log In</h2>
+    <h2>Login</h2>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Log In</button>
+        {{ form|crispy }}
+        <br>
+        <button type="submit" class="btn btn-success">Login</button>
     </form>
 </div>
 {% endblock content %}

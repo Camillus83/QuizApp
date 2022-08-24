@@ -48,16 +48,9 @@ body {
     flex-wrap: nowrap;
 }
 
-.login_form {
-    left: 50%;
-    position: absolute;
-    top: 45%;
-    transform: translate(-50%, -55%);
-    text-align: center;
-    color: #fff
-}
-
-.signup_form {
+.login_form,
+.signup_form,
+.logout_form {
     left: 50%;
     position: absolute;
     top: 45%;
