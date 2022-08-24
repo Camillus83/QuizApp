@@ -26,3 +26,13 @@ class SearchResultsListView(ListView):
         return Quiz.objects.filter(
             Q(title__icontains=query) | Q(author__username__icontains=query)
         )
+
+
+class MyQuizesListView(ListView):
+    model = Quiz
+    template_name = "quiz/my_quizes.html"
+    context_object_name = "quiz_list"
+
+    def myquiz_queryset(self):
+        query = self.request.GET.get("q")
+        return Quiz.objects.filter(Q(author__username__icontains=query))

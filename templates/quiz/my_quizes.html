@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Quiz List | QuizApp{% endblock title %}
+
+{% block content %}
+
+<br>
+{% for quiz in quiz_list %}
+{% if quiz.author.username == user.username %}
+<div class="card text-center">
+    <div class="card-header">
+        Quiz
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ quiz.title }}</h5>
+        <p class="card-text">{{ quiz.short_description }}</p>
+        <a href="{{ quiz.get_absolute_url }}" class="btn btn-primary">Attempt Quiz</a>
+    </div>
+</div>
+<br>
+
+{% endif %}
+{% endfor %}
+
+{% endblock content %}
