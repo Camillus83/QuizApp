@@ -1,0 +1,11 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Quiz List | QuizApp{% endblock title %}
+
+{% block content %}
+{% for quiz in quiz_list %}
+<div>
+    <h2><a href="{{ quiz.get_absolute_url }}">{{ quiz.title }}</a></h2>
+</div>
+{% endfor %}
+{% endblock content %}

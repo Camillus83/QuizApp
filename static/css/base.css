@@ -58,3 +58,13 @@ body {
     text-align: center;
     color: #fff
 }
+
+.quiz_questions,
+.quiz_detail {
+    left: 50%;
+    position: absolute;
+    top: 45%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    color: #fff
+}
