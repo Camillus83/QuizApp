@@ -1,15 +1,20 @@
 from django.shortcuts import render
 from django.db.models import Q
-
-
-from .models import Quiz
+from django.forms import inlineformset_factory
+from django.views.generic.detail import SingleObjectMixin
+from .forms import QuizQuestionsFormset
+from .models import Quiz, Question
 from django.views.generic import (
     ListView,
     DetailView,
     UpdateView,
     DeleteView,
+    FormView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.detail import SingleObjectMixin
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 class QuizListView(LoginRequiredMixin, ListView):
@@ -52,16 +57,47 @@ class MyQuizesListView(LoginRequiredMixin, ListView):
 
 class QuizUpdateView(LoginRequiredMixin, UpdateView):
     model = Quiz
-    fields = (
-        "title",
-        "short_description",
-        "resolution_time",
-        "number_of_questions",
-        "author",
-    )
     template_name = "quiz/quiz_edit.html"
-    success_url = ""
+    context_object_name = "quiz"
+    fields = ("title", "short_description")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["quiz_questions"] = Question.objects.filter(quiz=self.get_object().pk)
+        return ctx
 
 
 class QuizDeleteView(LoginRequiredMixin, DeleteView):
     pass
+
+
+# def updateQuiz(request, pk):
+# quiz = Quiz.objects.get(id=pk)
+# form = QuizForm(request.POST, instance=quiz)
+
+
+class QuizQuestionsUpdateView(SingleObjectMixin, FormView):
+
+    model = Quiz
+    template_name = "quiz/quiz_edit.html"
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=Quiz.objects.all())
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=Quiz.objects.all())
+        return super().post(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        return QuizQuestionsFormset(**self.get_form_kwargs(), instance=self.object)
+
+    def form_valid(self, form):
+        form.save()
+
+        """messages.add_message(self.request, message.SUCCESS, "changes were saved.")"""
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse("quiz_questions_edit")
