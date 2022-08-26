@@ -26,6 +26,15 @@ class Quiz(models.Model):
     def get_absolute_url_edit(self):
         return reverse("quiz_edit", args=[str(self.id)])
 
+    def get_absolute_url_questions_edit(self):
+        return reverse("quiz_questions_edit", args=[str(self.id)])
+
+    def get_absolute_url_delete(self):
+        return reverse("quiz_delete", args=[str(self.id)])
+
+    def get_absolute_url_my_quizes(self):
+        return reverse("my_quiz")
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(

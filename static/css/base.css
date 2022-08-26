@@ -73,6 +73,10 @@ body {
     text-align: center;
 }
 
-.quiz_edit {
+.quiz_edit,
+.quiz_delete {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    text-align: center;
     color: #fff;
 }

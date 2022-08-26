@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.forms import inlineformset_factory
 from django.views.generic.detail import SingleObjectMixin
-from .forms import QuizQuestionsFormset
+from .forms import QuizQuestionsFormset, QuizForm
 from .models import Quiz, Question
 from django.views.generic import (
     ListView,
@@ -13,7 +13,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import SingleObjectMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -61,25 +61,19 @@ class QuizUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = "quiz"
     fields = ("title", "short_description")
 
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx["quiz_questions"] = Question.objects.filter(quiz=self.get_object().pk)
-        return ctx
-
 
 class QuizDeleteView(LoginRequiredMixin, DeleteView):
-    pass
-
-
-# def updateQuiz(request, pk):
-# quiz = Quiz.objects.get(id=pk)
-# form = QuizForm(request.POST, instance=quiz)
+    model = Quiz
+    template_name = "quiz/quiz_delete.html"
+    context_object_name = "quiz"
+    success_url = reverse_lazy("my_quiz")
 
 
 class QuizQuestionsUpdateView(SingleObjectMixin, FormView):
 
     model = Quiz
-    template_name = "quiz/quiz_edit.html"
+    template_name = "quiz/quiz_questions_edit.html"
+    success_url = reverse_lazy("my_quiz")
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Quiz.objects.all())
@@ -94,10 +88,8 @@ class QuizQuestionsUpdateView(SingleObjectMixin, FormView):
 
     def form_valid(self, form):
         form.save()
-
         """messages.add_message(self.request, message.SUCCESS, "changes were saved.")"""
-
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse("quiz_questions_edit")
+        return reverse_lazy("my_quiz")

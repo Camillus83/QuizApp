@@ -5,45 +5,10 @@
 {% block content %}
 <div class="quiz_edit">
     <form action="" method="post" enctype="multipart/form-data">
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field.errors }}
-        {{ hidden_field }}
-        {% endfor %}
-
         {% csrf_token %}
-        {{ form.management_form }}
-        {{ form.non_form_errors }}
-        <h>Update Quiz</h>
-        {% for question_form in form.forms %}
-        <hr>
-        <h>
-            {% if question_form.instance.id %}
-            Question: {{question_form.instance.content }}
-            {% else %}
-            {% if form.forms|length > 1 %}
-            Add another Question
-            {% else %}
-            Add Question
-            {% endif %}
-            {% endif %}
-
-        </h>
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field.errors }}
-        {{ hidden_field }}
-        {% endfor %}
-        <table>
-            {{ question_form.as_table }}
-        </table>
-
-        {% endfor %}
-        <hr>
-        <p>
-            <button type="submit" class="btn-primary w-100 mb-3">Add New Question</button>
-            <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update Quiz</button>
-            <a href="{{ quiz.get_absolute_url_edit}}" role="button" class="btn btn-secondary w-100">Cancel</a>
-        </p>
-
+        {{ form|crispy }}
+        <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update Quiz</button>
+        <a href="{{ quiz.get_absolute_url_my_quizes }}" role="button" class="btn btn-secondary w-100">Cancel</a>
     </form>
 </div>
 

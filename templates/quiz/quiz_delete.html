@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{quiz.title}} Delete | QuizApp {% endblock title %}
+
+{% block content %}
+<div class="quiz_delete">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h>Are You sure You want to delete {{quiz.title}}?</h>
+        <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Delete Quiz</button>
+        <a href="{{quiz.get_absolute_url_my_quizes}}" role="button" class="btn btn-secondary w-100">Cancel</a>
+    </form>
+</div>
+
+{% endblock content %}
