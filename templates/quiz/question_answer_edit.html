@@ -1,8 +1,9 @@
 {% extends '_base.html' %}
-{% load crispy_forms_tags %}
-{% block title %}{{quiz.title}} Edit | QuizApp {% endblock title %}
+{% load static %}
+{% block title %}Quiz List | QuizApp{% endblock title %}
 
 {% block content %}
+
 <div class="quiz_edit">
     <form action="" method="post" enctype="multipart/form-data">
 
@@ -16,21 +17,19 @@
         {{ form.non_form_errors }}
         <h>Update Quiz</h>
         {% csrf_token %}
-        {{ form.instance.Quiz.title}}
-        {% for question_form in form.forms %}
+        {{ form.instance.Question.content}}
+        {% for answer_form in form.forms %}
         <hr>
         <h>
-            {% if question_form.instance.id %}
-            Question: {{question_form.instance.content }}
+            {% if answer_form.instance.id %}
+            Question: {{answer_form.instance.content }}
             <br>
-            Question personal key {{question_form.instance.pk}}
+            Question personal key {{answer_form.instance.pk}}
             <br>
-            <a href="{% url 'question_answer_edit' question_form.instance.pk %}" role=" button"
-                class="btn btn-primary">Edit
-                answers</a>
+
             {% else %}
             {% if form.forms|length > 1 %}
-            Add another Question
+            Add another Answer
             {% else %}
             Add Question
             {% endif %}
@@ -41,7 +40,7 @@
         {{ hidden_field }}
         {% endfor %}
         <table>
-            {{ question_form.as_table }}
+            {{ answer_form.as_table }}
         </table>
 
         {% endfor %}

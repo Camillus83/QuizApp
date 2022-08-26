@@ -7,6 +7,7 @@ from .views import (
     MyQuizesListView,
     QuizQuestionsUpdateView,
     QuizDeleteView,
+    QuestionAnswerView,
 )
 
 urlpatterns = [
@@ -21,4 +22,9 @@ urlpatterns = [
     ),
     path("edit/<uuid:pk>/", QuizUpdateView.as_view(), name="quiz_edit"),
     path("delete/<uuid:pk>/", QuizDeleteView.as_view(), name="quiz_delete"),
+    path(
+        "edit/answer/<uuid:pk>",
+        QuestionAnswerView.as_view(),
+        name="question_answer_edit",
+    ),
 ]

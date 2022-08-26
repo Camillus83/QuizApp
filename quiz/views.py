@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.forms import inlineformset_factory
 from django.views.generic.detail import SingleObjectMixin
-from .forms import QuizQuestionsFormset, QuizForm
+from .forms import QuizQuestionsFormset, QuestionAnswerFormset, QuizForm
 from .models import Quiz, Question
 from django.views.generic import (
     ListView,
@@ -89,6 +89,29 @@ class QuizQuestionsUpdateView(SingleObjectMixin, FormView):
     def form_valid(self, form):
         form.save()
         """messages.add_message(self.request, message.SUCCESS, "changes were saved.")"""
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse_lazy("my_quiz")
+
+
+class QuestionAnswerView(SingleObjectMixin, FormView):
+    model = Question
+    template_name = "quiz/question_answer_edit.html"
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=Question.objects.all())
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=Question.objects.all())
+        return super().post(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+        return QuestionAnswerFormset(**self.get_form_kwargs(), instance=self.object)
+
+    def form_valid(self, form):
+        form.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

@@ -35,6 +35,9 @@ class Quiz(models.Model):
     def get_absolute_url_my_quizes(self):
         return reverse("my_quiz")
 
+    def get_absolute_url_answer_edit(self):
+        return reverse("question_answer_edit")
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(
@@ -47,6 +50,11 @@ class Question(models.Model):
 
     def __str__(self):
         return self.content
+
+    def get_absolute_url_answer_edit(self):
+        return reverse(
+            "question_answer_edit", args=["174ced93-8b2b-4318-ac95-9901c485cd6e"]
+        )
 
 
 class Answer(models.Model):
