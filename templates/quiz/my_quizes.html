@@ -5,7 +5,7 @@
 {% block content %}
 
 <br>
-<a href="{{ quiz.get_absolute_url_create }}" class="btn btn-primary">Create New Quiz</a>
+<a href="{{ view.get_absolute_url_create }}" class="btn btn-primary">Create New Quiz</a>
 <hr>
 {% for quiz in quiz_list %}
 {% if quiz.author.username == user.username %}

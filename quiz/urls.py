@@ -8,8 +8,8 @@ from .views import (
     QuizQuestionsUpdateView,
     QuizDeleteView,
     QuestionAnswerView,
+    QuizCreateView,
 )
-from .views import QuizCreateView
 
 urlpatterns = [
     path("", QuizListView.as_view(), name="quiz_list"),

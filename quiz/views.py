@@ -51,6 +51,9 @@ class MyQuizesListView(LoginRequiredMixin, ListView):
     context_object_name = "quiz_list"
     login_url = "account_login"
 
+    def get_absolute_url_create(self):
+        return reverse("quiz_create")
+
     def myquiz_queryset(self):
         query = self.request.GET.get("q")
         return Quiz.objects.filter(Q(author__username__icontains=query))
@@ -73,11 +76,12 @@ class QuizDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("my_quiz")
 
 
-class QuizQuestionsUpdateView(SingleObjectMixin, FormView):
+class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
 
     model = Quiz
     template_name = "quiz/quiz_questions_edit.html"
     success_url = reverse_lazy("my_quiz")
+    login_url = "account_login"
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Quiz.objects.all())
@@ -99,9 +103,10 @@ class QuizQuestionsUpdateView(SingleObjectMixin, FormView):
         return reverse_lazy("my_quiz")
 
 
-class QuestionAnswerView(SingleObjectMixin, FormView):
+class QuestionAnswerView(LoginRequiredMixin, SingleObjectMixin, FormView):
     model = Question
     template_name = "quiz/question_answer_edit.html"
+    login_url = "account_login"
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Question.objects.all())
@@ -124,11 +129,12 @@ class QuestionAnswerView(SingleObjectMixin, FormView):
         return reverse_lazy("quiz_questions_edit", kwargs={"pk": quizpk})
 
 
-class QuizCreateView(CreateView):
+class QuizCreateView(LoginRequiredMixin, CreateView):
     model = Quiz
     template_name = "quiz/quiz_create.html"
     context_object_name = "quiz"
     fields = ("title", "short_description")
+    login_url = "account_login"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
