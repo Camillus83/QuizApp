@@ -25,9 +25,10 @@
             <br>
             Question personal key {{question_form.instance.pk}}
             <br>
+            {% if question_form.instance.content != '' %}
             <a href="{% url 'question_answer_edit' question_form.instance.pk %}" role=" button"
-                class="btn btn-primary">Edit
-                answers</a>
+                class="btn btn-primary">Edit answers</a>
+            {% endif %}
             {% else %}
             {% if form.forms|length > 1 %}
             Add another Question
@@ -50,7 +51,7 @@
         <p>
             <button type="submit" class="btn-primary w-100 mb-3">Add New Question</button>
             <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update Quiz</button>
-            <a href="{{ quiz.get_absolute_url_edit}}" role="button" class="btn btn-secondary w-100">Cancel</a>
+            <a href="{{ quiz.get_absolute_url_my_quizes}}" role="button" class="btn btn-secondary w-100">Cancel</a>
         </p>
 
     </form>

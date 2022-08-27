@@ -10,6 +10,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     FormView,
+    CreateView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import SingleObjectMixin
@@ -61,6 +62,9 @@ class QuizUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = "quiz"
     fields = ("title", "short_description")
 
+    def get_success_url(self):
+        return reverse_lazy("my_quiz")
+
 
 class QuizDeleteView(LoginRequiredMixin, DeleteView):
     model = Quiz
@@ -111,6 +115,25 @@ class QuestionAnswerView(SingleObjectMixin, FormView):
         return QuestionAnswerFormset(**self.get_form_kwargs(), instance=self.object)
 
     def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        self.object = self.get_object(queryset=Question.objects.all())
+        quizpk = self.object.quiz.pk
+        return reverse_lazy("quiz_questions_edit", kwargs={"pk": quizpk})
+
+
+class QuizCreateView(CreateView):
+    model = Quiz
+    template_name = "quiz/quiz_create.html"
+    context_object_name = "quiz"
+    fields = ("title", "short_description")
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
         form.save()
         return HttpResponseRedirect(self.get_success_url())
 

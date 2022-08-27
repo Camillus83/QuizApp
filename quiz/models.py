@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 import uuid
 
 
@@ -37,6 +37,9 @@ class Quiz(models.Model):
 
     def get_absolute_url_answer_edit(self):
         return reverse("question_answer_edit")
+
+    def get_absolute_url_create(self):
+        return reverse("quiz_create")
 
 
 class Question(models.Model):

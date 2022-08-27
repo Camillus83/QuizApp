@@ -16,15 +16,17 @@
         {{ form.management_form }}
         {{ form.non_form_errors }}
         <h>Update Quiz</h>
+        <h>{{answer_form.instance.pk}}</h>
         {% csrf_token %}
         {{ form.instance.Question.content}}
         {% for answer_form in form.forms %}
         <hr>
         <h>
             {% if answer_form.instance.id %}
-            Question: {{answer_form.instance.content }}
+            Answer
+            <!--: {{answer_form.instance.content }} -->
             <br>
-            Question personal key {{answer_form.instance.pk}}
+            Answer personal key {{answer_form.instance.pk}}
             <br>
 
             {% else %}
@@ -49,7 +51,7 @@
         <p>
             <button type="submit" class="btn-primary w-100 mb-3">Add New Question</button>
             <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update Quiz</button>
-            <a href="{{ quiz.get_absolute_url_edit}}" role="button" class="btn btn-secondary w-100">Cancel</a>
+            <a href="{{ view.get_success_url }}" role="button" class="btn btn-secondary w-100">Cancel</a>
         </p>
 
     </form>
