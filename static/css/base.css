@@ -61,7 +61,8 @@ body {
 
 .login_form,
 .quiz_create,
-.quiz_edit {
+.quiz_edit,
+.quiz_delete {
     left: 50%;
     position: absolute;
     top: 45%;
@@ -81,11 +82,4 @@ body {
     font-size: 1.8rem;
     line-height: 1.5;
     text-align: center;
-}
-
-.quiz_delete {
-    font-size: 1.8rem;
-    line-height: 1.5;
-    text-align: center;
-    color: #fff;
 }
