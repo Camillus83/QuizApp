@@ -5,12 +5,18 @@
 
 {% block content %}
 <div class="login_form">
-    <h2>Login</h2>
     <form method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Login</h5>
+                <p class="card-text">
+                    {% csrf_token %}
+                    {{ form|crispy }}</p>
+                <button type="submit" class="btn btn-success">Login</button>
+                <a href="#" class="card-link">Login with GitHub</a>
+            </div>
+        </div>
         <br>
-        <button type="submit" class="btn btn-success">Login</button>
     </form>
 </div>
 {% endblock content %}

@@ -5,11 +5,16 @@
 {% block content %}
 <div class="quiz_create">
     <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <hr>
-        <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Submit</button>
-        <a href="{{view.get_success_url}}" role="button" class="btn btn-secondary w-100">Cancel</a>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Create Quiz</h5>
+                <p class="card-text">
+                    {% csrf_token %}
+                    {{ form|crispy }}</p>
+                <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Submit</button>
+                <a href="{{view.get_success_url}}" role="button" class="btn btn-secondary w-100">Cancel</a>
+            </div>
+        </div>
     </form>
 </div>
 

@@ -12,11 +12,11 @@
 {% for quiz in quiz_list %}
 <div class="card text-center">
     <div class="card-header">
-        Quiz
+        {{ quiz.title }}
     </div>
     <div class="card-body">
-        <h5 class="card-title">{{ quiz.title }}</h5>
-        <p class="card-text">{{ quiz.short_description }}</p>
+        <h5 class="card-title"> {{ quiz.short_description}}</h5>
+        <p class="card-text">Author: {{ quiz.author }}</p>
         <a href="{{ quiz.get_absolute_url }}" class="btn btn-primary">Attempt Quiz</a>
     </div>
 </div>
