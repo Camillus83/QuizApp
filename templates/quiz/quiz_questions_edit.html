@@ -3,48 +3,40 @@
 {% block title %}{{quiz.title}} Edit | QuizApp {% endblock title %}
 
 {% block content %}
+<div class="quiz_edit_header">
+    <h> Update Questions for {{quiz.title}}</h>
+</div>
 <div class="quiz_edit">
     <form action="" method="post" enctype="multipart/form-data">
-
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field.errors }}
-        {{ hidden_field }}
-        {% endfor %}
-
         {% csrf_token %}
         {{ form.management_form }}
         {{ form.non_form_errors }}
-        <h>Update Quiz</h>
         {% csrf_token %}
         {{ form.instance.Quiz.title}}
         {% for question_form in form.forms %}
         <hr>
-        <h>
-            {% if question_form.instance.id %}
-            Question: {{question_form.instance.content }}
-            <br>
-            Question personal key {{question_form.instance.pk}}
-            <br>
-            {% if question_form.instance.content != '' %}
-            <a href="{% url 'question_answer_edit' question_form.instance.pk %}" role=" button"
-                class="btn btn-primary">Edit answers</a>
-            {% endif %}
-            {% else %}
-            {% if form.forms|length > 1 %}
-            Add another Question
-            {% else %}
-            Add Question
-            {% endif %}
-            {% endif %}
-        </h>
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field.errors }}
-        {{ hidden_field }}
-        {% endfor %}
-        <table>
-            {{ question_form.as_table }}
-        </table>
-
+        <div class="card" style="width: 30rem;">
+            <div class="card-body">
+                <h>
+                    {% if question_form.instance.id %}
+                    Question #{{ forloop.counter }}
+                    {% else %}
+                    {% if form.forms|length > 1 %}
+                    Add another Question
+                    {% else %}
+                    Add Question
+                    {% endif %}
+                    {% endif %}
+                </h>
+                <table>
+                    {{ question_form.as_table }}
+                </table>
+                {% if question_form.instance.content != '' %}
+                <a href="{% url 'question_answer_edit' question_form.instance.pk %}" role=" button"
+                    class="btn btn-primary">Edit answers</a>
+                {% endif %}
+            </div>
+        </div>
         {% endfor %}
 
         <hr>

@@ -4,52 +4,44 @@
 
 {% block content %}
 
-<div class="quiz_edit">
+<div class="question_answer_edit_header">
+    <h>Update Answers for question: {{question.content}}</h>
+</div>
+
+<div class="question_answer_edit">
     <form action="" method="post" enctype="multipart/form-data">
 
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field.errors }}
-        {{ hidden_field }}
-        {% endfor %}
 
         {% csrf_token %}
         {{ form.management_form }}
         {{ form.non_form_errors }}
-        <h>Update Quiz</h>
-        <h>{{answer_form.instance.pk}}</h>
         {% csrf_token %}
         {{ form.instance.Question.content}}
         {% for answer_form in form.forms %}
         <hr>
-        <h>
-            {% if answer_form.instance.id %}
-            Answer
-            <!--: {{answer_form.instance.content }} -->
-            <br>
-            Answer personal key {{answer_form.instance.pk}}
-            <br>
+        <div class="card" style="width: 30rem;">
+            <div class="card-body">
 
-            {% else %}
-            {% if form.forms|length > 1 %}
-            Add another Answer
-            {% else %}
-            Add Question
-            {% endif %}
-            {% endif %}
-        </h>
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field.errors }}
-        {{ hidden_field }}
-        {% endfor %}
-        <table>
-            {{ answer_form.as_table }}
-        </table>
-
+                <h>
+                    {% if answer_form.instance.id %}
+                    Answer #{{ forloop.counter }}
+                    {% else %}
+                    {% if form.forms|length > 1 %}
+                    Answer #{{ forloop.counter }}
+                    {% else %}
+                    Add Question
+                    {% endif %}
+                    {% endif %}
+                </h>
+                <table>
+                    {{ answer_form.as_table }}
+                </table>
+            </div>
+        </div>
         {% endfor %}
 
         <hr>
         <p>
-            <button type="submit" class="btn-primary w-100 mb-3">Add New Question</button>
             <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update Quiz</button>
             <a href="{{ view.get_success_url }}" role="button" class="btn btn-secondary w-100">Cancel</a>
         </p>

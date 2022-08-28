@@ -3,26 +3,48 @@
 {% block title %}{{quiz.title}} | QuizApp{% endblock title %}
 
 {% block content %}
-
+<br>
 <div class="quiz_detail">
-    <h2><a href="">{{ quiz.title }}</a></h2>
-    <p>Short description: {{ quiz.short_description }}</p>
-    <p>Author: {{ quiz.author }}</p>
-    <p>Number of questions: {{ quiz.number_of_questions }}</p>
-    <h> Questions: </h>
-    <div class="quiz_questions">
-        <ul>
-            {% for question in quiz.questions.all %}
-            <li>{{ question.content }}</li>
-            <ul>
-                {% for answer in question.answers.all %}
-                <li>{{ answer.content }}</li>
-                {% endfor %}
-            </ul>
-            {% endfor %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{quiz.title}}</h5>
+            <p class="card-text">{{quiz.short_description}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Author: {{quiz.author}}</li>
+            <li class="list-group-item">Time: {{quiz.resolution_time}}</li>
+            <li class="list-group-item">Amount of questions: {{quiz.number_of_questions}}</li>
         </ul>
-    </div>
 
+    </div>
+    <br>
+    <div class="quiz_questions">
+        {% for question in quiz.questions.all %}
+        <div class="card">
+            <div class="card-header">
+                Question #{{forloop.counter}}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ question.content }}</h5>
+
+                <ul>
+                    {% for answer in question.answers.all %}
+                    {% if answer.is_correct == True %}
+                    <li><label><input type='radio' name='{{question.id}}' value="{{answer.pk}}" checked>
+                            {{answer.content}}</label></li>
+                    {% else %}
+                    <li><label><input type='radio' name='{{question.id}}' value="{{answer.pk}}">
+                            {{answer.content}}</label></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+
+                </p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock content %}
