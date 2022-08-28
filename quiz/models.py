@@ -16,9 +16,10 @@ class Quiz(models.Model):
         get_user_model(),
         on_delete=models.CASCADE,
     )
+    is_public = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
+        return f"Quiz title: {self.title}"
 
     def get_absolute_url(self):
         return reverse("quiz_detail", args=[str(self.id)])
@@ -41,6 +42,9 @@ class Quiz(models.Model):
     def get_absolute_url_create(self):
         return reverse("quiz_create")
 
+    def get_absolute_url_play(self):
+        return reverse("quiz_play", args=[str(self.id)])
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(
@@ -53,11 +57,6 @@ class Question(models.Model):
 
     def __str__(self):
         return self.content
-
-    def get_absolute_url_answer_edit(self):
-        return reverse(
-            "question_answer_edit", args=["174ced93-8b2b-4318-ac95-9901c485cd6e"]
-        )
 
 
 class Answer(models.Model):
@@ -77,4 +76,8 @@ class Answer(models.Model):
 
 
 class Attempt(models.Model):
-    pass
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    score = models.SmallIntegerField(default=0)
+    has_passed = models.BooleanField(default=False)
+    attempt_date = models.DateTimeField(auto_now_add=True)

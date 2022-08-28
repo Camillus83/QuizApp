@@ -145,3 +145,10 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("my_quiz")
+
+
+class QuizPlayView(LoginRequiredMixin, DetailView):
+    model = Quiz
+    template_name = "quiz/quiz_play.html"
+    context_object_name = "quiz"
+    login_url = "account_login"
