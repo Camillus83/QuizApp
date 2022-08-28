@@ -30,10 +30,10 @@
                 <ul>
                     {% for answer in question.answers.all %}
                     {% if answer.is_correct == True %}
-                    <li><label><input type='radio' name='{{question.id}}' value="{{answer.pk}}" checked>
-                            {{answer.content}}</label></li>
+                    <li><label><input type='radio' name='{{question.id}}' value="{{answer.pk}}" checked disabled>
+                            <b>{{answer.content}}</b></label></li>
                     {% else %}
-                    <li><label><input type='radio' name='{{question.id}}' value="{{answer.pk}}">
+                    <li><label><input type='radio' name='{{question.id}}' value="{{answer.pk}}" disabled>
                             {{answer.content}}</label></li>
                     {% endif %}
                     {% endfor %}
