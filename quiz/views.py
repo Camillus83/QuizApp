@@ -97,6 +97,9 @@ class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
             request, Quiz.id ** self.get_form_kwargs(), instance=self.object
         )
 
+    def get_form(self, form_class=None):
+        return QuizQuestionsFormset(**self.get_form_kwargs(), instance=self.object)
+
     def form_valid(self, form):
         form.save()
         """messages.add_message(self.request, message.SUCCESS, "changes were saved.")"""
