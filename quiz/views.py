@@ -1,9 +1,10 @@
+from uuid import UUID, uuid1, uuid4
 from django.shortcuts import render
 from django.db.models import Q
 from django.forms import inlineformset_factory
 from django.views.generic.detail import SingleObjectMixin
 from .forms import QuizQuestionsFormset, QuestionAnswerFormset, QuizForm
-from .models import Quiz, Question
+from .models import Quiz, Question, Answer, Attempt
 from django.views.generic import (
     ListView,
     DetailView,
@@ -15,7 +16,10 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.http import JsonResponse
+import uuid
+
 
 # Create your views here.
 class QuizListView(LoginRequiredMixin, ListView):
@@ -89,10 +93,9 @@ class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Quiz.objects.all())
-        return super().post(request, *args, **kwargs)
-
-    def get_form(self, form_class=None):
-        return QuizQuestionsFormset(**self.get_form_kwargs(), instance=self.object)
+        return super().post(
+            request, Quiz.id ** self.get_form_kwargs(), instance=self.object
+        )
 
     def form_valid(self, form):
         form.save()
@@ -152,3 +155,77 @@ class QuizPlayView(LoginRequiredMixin, DetailView):
     template_name = "quiz/quiz_play.html"
     context_object_name = "quiz"
     login_url = "account_login"
+
+
+def quiz_data_view(request, pk):
+    quiz = Quiz.objects.get(pk=pk)
+    questions_QS = Question.objects.filter(quiz=quiz)
+    questions = []
+    for q in questions_QS:
+        answers = []
+        answers_QS = Answer.objects.filter(question=q)
+        for a in answers_QS:
+            answers.append(a.content)
+        questions.append({str(q.content): answers})
+    return JsonResponse(
+        {
+            "data": questions,
+        }
+    )
+
+
+def save_quiz_view(request, pk):
+    # print(request.POST)
+    questions = []
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        data = request.POST
+        data_ = dict(data.lists())
+
+        data_.pop("csrfmiddlewaretoken")
+
+        for k in data_.keys():
+            print("key:", k)
+            question = Question.objects.get(content=k)
+            questions.append(question)
+        print(questions)
+        user = request.user
+        quiz = Quiz.objects.get(pk=pk)
+
+        score = 0
+        multiplier = 100 / quiz.number_of_questions
+        results = []
+        correct_answer = None
+
+        for q in questions:
+            a_selected = request.POST.get(q.content)
+
+            if a_selected != "":
+                question_answers = Answer.objects.filter(question=q)
+                for answer in question_answers:
+                    if a_selected == answer.content:
+                        if answer.is_correct:
+                            score += 1
+                            correct_answer = answer.content
+                    else:
+                        if answer.is_correct:
+                            correct_answer = answer.content
+                results.append(
+                    {
+                        str(q): {
+                            "correct_answer": correct_answer,
+                            "answered": a_selected,
+                        }
+                    }
+                )
+            else:
+                results.append({str(q): "not answered"})
+
+        score_ = score * multiplier
+        Attempt.objects.create(quiz=quiz, user=user, score=score_)
+
+    return JsonResponse({"text": "works"})
+
+
+def quiz_view(request, pk):
+    quiz = Quiz.objects.get(pk=pk)
+    return render(request, "quiz/quiz.html", {"obj": quiz})

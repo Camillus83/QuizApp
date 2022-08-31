@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}
+{{ obj.name }}
+{% endblock title %}
+
+{% block content %}
+{{obj.name}}
+<hr>
+<form id="quiz-form" class="mt-3 mb-3">
+    {% csrf token % }
+    <div id="quiz-box"></div>
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+</form>
+{% endblock content %}

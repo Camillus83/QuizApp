@@ -17,7 +17,8 @@
     <div class="card-body">
         <h5 class="card-title"> {{ quiz.short_description}}</h5>
         <p class="card-text">Author: {{ quiz.author }}</p>
-        <a href="{{ quiz.get_absolute_url }}" class="btn btn-primary">Attempt Quiz</a>
+        <a href="{{ quiz.get_absolute_url_play }}" class="btn btn-primary">Attempt Quiz</a>
+        <a href="{{ quiz.get_absolute_url }}" class="btn btn-primary">Preview Quiz</a>
     </div>
 </div>
 <br>

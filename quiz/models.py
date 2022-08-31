@@ -21,6 +21,9 @@ class Quiz(models.Model):
     def __str__(self):
         return f"Quiz title: {self.title}"
 
+    def get_answers(self):
+        return self.quiz.question.answers_set.all()
+
     def get_absolute_url(self):
         return reverse("quiz_detail", args=[str(self.id)])
 
@@ -78,6 +81,6 @@ class Answer(models.Model):
 class Attempt(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    score = models.SmallIntegerField(default=0)
+    score = models.SmallIntegerField(default=1)
     has_passed = models.BooleanField(default=False)
     attempt_date = models.DateTimeField(auto_now_add=True)

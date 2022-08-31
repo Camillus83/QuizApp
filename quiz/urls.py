@@ -10,6 +10,9 @@ from .views import (
     QuestionAnswerView,
     QuizCreateView,
     QuizPlayView,
+    quiz_data_view,
+    quiz_view,
+    save_quiz_view,
 )
 
 urlpatterns = [
@@ -30,5 +33,7 @@ urlpatterns = [
         name="question_answer_edit",
     ),
     path("new/", QuizCreateView.as_view(), name="quiz_create"),
-    path("play/<uuid:pk>", QuizPlayView.as_view(), name="quiz_play"),
+    path("play/<uuid:pk>", quiz_view, name="quiz_play"),
+    path("play/<uuid:pk>/data", quiz_data_view, name="quiz_data"),
+    path("play/<uuid:pk>/save", save_quiz_view, name="quiz_save"),
 ]
