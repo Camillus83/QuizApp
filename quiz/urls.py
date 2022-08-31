@@ -5,6 +5,7 @@ from .views import (
     QuizUpdateView,
     SearchResultsListView,
     MyQuizesListView,
+    MyAttemptsListView,
     QuizQuestionsUpdateView,
     QuizDeleteView,
     QuestionAnswerView,
@@ -18,6 +19,7 @@ from .views import (
 urlpatterns = [
     path("", QuizListView.as_view(), name="quiz_list"),
     path("myquiz/", MyQuizesListView.as_view(), name="my_quiz"),
+    path("myattempts/", MyAttemptsListView.as_view(), name="my_attempts"),
     path("search/", SearchResultsListView.as_view(), name="search_results"),
     path("<uuid:pk>", QuizDetailView.as_view(), name="quiz_detail"),
     path(

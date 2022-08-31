@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}My Attempts | QuizApp{% endblock title %}
+
+{% block content %}
+<br>
+
+{% for attempt in attempt_list %}
+{% if attempt.user.username == user.username %}
+<div class="card text-center">
+    <div class="card-header">
+        {{ attempt.quiz.title }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Quiz score: {{ attempt.score}}</h5>
+        <h5 class="card-title">Has passed?: {{ attempt.has_passed}}</h5>
+        <h5 class="card-title">Attempt Date: {{ attempt.attempt_date}}</h5>
+    </div>
+</div>
+<br>
+
+{% endif %}
+{% endfor %}
+
+{% endblock content %}
