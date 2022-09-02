@@ -1,9 +1,8 @@
 from uuid import UUID, uuid1, uuid4
 from django.shortcuts import render
 from django.db.models import Q
-from django.forms import inlineformset_factory
 from django.views.generic.detail import SingleObjectMixin
-from .forms import QuizQuestionsFormset, QuestionAnswerFormset, QuizForm
+from .forms import QuizQuestionsFormset, QuestionAnswerFormset
 from .models import Quiz, Question, Answer, Attempt
 from django.views.generic import (
     ListView,
@@ -16,12 +15,9 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.http import JsonResponse
-import uuid
+from django.http import HttpResponseRedirect, JsonResponse
 
 
-# Create your views here.
 class QuizListView(LoginRequiredMixin, ListView):
     model = Quiz
     template_name = "quiz/quiz_list.html"
@@ -112,7 +108,6 @@ class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
 
     def form_valid(self, form):
         form.save()
-        """messages.add_message(self.request, message.SUCCESS, "changes were saved.")"""
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -188,7 +183,6 @@ def quiz_data_view(request, pk):
 
 
 def save_quiz_view(request, pk):
-    # print(request.POST)
     questions = []
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = request.POST
@@ -236,7 +230,14 @@ def save_quiz_view(request, pk):
         score_ = score * multiplier
         Attempt.objects.create(quiz=quiz, user=user, score=score_)
 
-    return JsonResponse({"text": "works"})
+        if score_ >= quiz.required_score_to_pass:
+            return JsonResponse(
+                {"passed": True, "score": score_, "attempt_details": results}
+            )
+        if score_ < quiz.required_score_to_pass:
+            return JsonResponse(
+                {"passed": False, "score": score_, "attempt_details": results}
+            )
 
 
 def quiz_view(request, pk):

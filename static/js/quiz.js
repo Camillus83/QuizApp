@@ -1,10 +1,12 @@
-console.log('pierdol sie');
+console.log('Hello Quiz');
 
 
 
 const url = window.location.href
 
 const quizBox = document.getElementById('quiz-box')
+const scoreBox = document.getElementById('score-box')
+const ResultBox = document.getElementById('result-box')
 console.log(url)
 
 $.ajax({
@@ -61,10 +63,56 @@ const sendData = () => {
         type: 'POST',
         url: `${url}/save`,
         data: data,
-        succes: function (response) {
-            const results = response.results
+        success: function (response) {
+            const results = response.attempt_details
             console.log(results)
             console.log(response)
+            quizForm.classList.add('not-visible')
+
+            scoreBox.innerHTML = `
+                ${response.passed ? 'Passed' : 'Failed'} Your result is ${response.score} %
+
+            `
+
+            results.forEach(result => {
+                const resDiv = document.createElement("div")
+                for (const [question, resp] of Object.entries(result)) {
+                    console.log(question)
+                    console.log(resp)
+                    console.log('*********')
+
+                    resDiv.innerHTML += question
+                    const cls = ['container', 'p-3', 'text-light', 'h3']
+                    resDiv.classList.add(...cls)
+
+                    if (resp == 'not answered') {
+                        resDiv.innerHTML += '- not answered'
+                        resDiv.classList.add('bg-danger')
+                    }
+                    else {
+                        const answer = resp['answered']
+                        const correctAnswer = resp['correct_answer']
+                        if (answer == correctAnswer) {
+                            resDiv.classList.add('bg-success')
+                            resDiv.innerHTML += `
+                            answered: ${answer}
+                            `
+                        }
+                        else {
+                            resDiv.classList.add('bg-danger')
+                            resDiv.innerHTML += `
+                            | correct answer: ${correctAnswer}
+                            `
+                            resDiv.innerHTML += `
+                            | answered: ${answer}
+                            `
+                        }
+                    }
+                }
+                //const body = document.getElementsByTagName('BODY')[0]
+                ResultBox.append(resDiv)
+            })
+
         },
         error: function (error) {
             console.log(error)
@@ -77,6 +125,5 @@ const sendData = () => {
 
 quizForm.addEventListener('submit', e => {
     e.preventDefault()
-
     sendData()
 })

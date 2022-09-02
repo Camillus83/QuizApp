@@ -9,7 +9,7 @@ class Quiz(models.Model):
     title = models.CharField(max_length=200)
     short_description = models.CharField(max_length=500)
     resolution_time = models.PositiveIntegerField(
-        help_text="Quiz Duration in minutes", default=1
+        help_text="Quiz Duration in minutes", default=15
     )
     number_of_questions = models.PositiveIntegerField(default=1)
     author = models.ForeignKey(
@@ -17,12 +17,12 @@ class Quiz(models.Model):
         on_delete=models.CASCADE,
     )
     is_public = models.BooleanField(default=False)
+    required_score_to_pass = models.IntegerField(
+        help_text="Required score in %", default=50
+    )
 
     def __str__(self):
         return f"Quiz title: {self.title}"
-
-    def get_answers(self):
-        return self.quiz.question.answers_set.all()
 
     def get_absolute_url(self):
         return reverse("quiz_detail", args=[str(self.id)])

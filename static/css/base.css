@@ -102,3 +102,7 @@ body {
 ul {
     list-style-type: none;
 }
+
+.not-visible {
+    display: none;
+}
