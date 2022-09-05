@@ -198,9 +198,9 @@ def save_quiz_view(request, pk):
         print(questions)
         user = request.user
         quiz = Quiz.objects.get(pk=pk)
-
+        max_score = Question.objects.filter(quiz=quiz).count()
         score = 0
-        multiplier = 100 / quiz.number_of_questions
+        multiplier = 100 / max_score
         results = []
         correct_answer = None
 

@@ -14,19 +14,21 @@
 {% block content %}
 <br>
 <script src="{% static 'js/quiz.js' %}" defer></script>
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col">
-                <b>{{obj.title}}</b>
-                <p>Required score to pass: {{obj.required_score_to_pass}}%</p>
-                <div class="good-luck">
-                    <p>Good Luck!</p>
-                </div>
-                <a href="{% url 'quiz_list' %}" class="btn btn-danger">Cancel</a>
+<div id="quiz-header">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <b>{{obj.title}}</b>
+                    <p>Required score to pass: {{obj.required_score_to_pass}}%</p>
+                    <div class="good-luck">
+                        <p>Good Luck!</p>
+                    </div>
+                    <a href="{% url 'quiz_list' %}" class="btn btn-danger">Cancel</a>
 
+                </div>
+                <div class="col text-right" id="timer-box">countdown</div>
             </div>
-            <div class="col text-right" id="timer-box">countdown</div>
         </div>
     </div>
 </div>
@@ -40,6 +42,7 @@
 </form>
 <a href="{% url 'quiz_list' %}" class="btn btn-danger">Cancel</a>
 
-<div id="score-box"></div>
+<div id="score-box">
+</div>
 <div id="result-box"></div>
 {% endblock content %}

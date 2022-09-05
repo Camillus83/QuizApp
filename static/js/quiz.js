@@ -64,18 +64,21 @@ $.ajax({
     success: function (response) {
         console.log(response)
         const data = response.data
+        let content = ''
 
         data.forEach(element => {
             for (const [question, answers] of Object.entries(element)) {
-                quizBox.innerHTML += `
+                content += `
                     <hr>
-                    <div class="mb-2">
-                        <b>${question}</b>
-                    </div>
+                    <div class="card">
+                    <div class="card-header">
+                        <h><b>${question}</b></h>
+                        </div>
+                    <div class="card-body">
                 `
 
                 answers.forEach(answer => {
-                    quizBox.innerHTML += `
+                    content += `
                     <div>
                         <input type="radio" class="ans" id="${question}-${answer}" name="${question}" value="${answer}">
                         <label for="${question}">${answer}</label>
@@ -83,8 +86,16 @@ $.ajax({
                     `
                 })
             }
+            content += `
+                </div>
+                </div>
+            `
+
         });
+
+        content += `<button type="submit" class="btn btn-primary mt-3">Save</button>`
         ActivateTimer(response.time)
+        quizForm.innerHTML += content
     },
     error: function (error) {
         console.log(error)
@@ -94,6 +105,7 @@ $.ajax({
 
 const quizForm = document.getElementById("quiz-form")
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
+const quizHeader = document.getElementById("quiz-header")
 
 const sendData = () => {
     const elements = [...document.getElementsByClassName('ans')]
@@ -118,10 +130,15 @@ const sendData = () => {
             console.log(results)
             console.log(response)
             quizForm.classList.add('not-visible')
+            quizHeader.classList.add('not-visible')
 
-            scoreBox.innerHTML = `
-                ${response.passed ? 'Passed' : 'Failed'} Your result is ${response.score.toFixed(2)} %
-
+            scoreBox.innerHTML = `<br>
+            <div class="card">
+            <div class="card-body align-items-center d-flex justify-content-center"> 
+                ${response.passed ? '<b>Passed :)</b>' : '<b>Failed :(</b>'} <br> Your result is ${response.score.toFixed(2)} %
+            </div> 
+            </div>
+            </br>
             `
 
             results.forEach(result => {
@@ -135,8 +152,8 @@ const sendData = () => {
                     const cls = ['container', 'p-3', 'text-light', 'h3']
                     resDiv.classList.add(...cls)
 
-                    if (resp == 'not answered') {
-                        resDiv.innerHTML += '- not answered'
+                    if (resp['answered'] == 'null') {
+                        resDiv.innerHTML += '<br>| not answered'
                         resDiv.classList.add('bg-danger')
                     }
                     else {
@@ -144,16 +161,16 @@ const sendData = () => {
                         const correctAnswer = resp['correct_answer']
                         if (answer == correctAnswer) {
                             resDiv.classList.add('bg-success')
-                            resDiv.innerHTML += `
-                            answered: ${answer}
+                            resDiv.innerHTML += `<br>
+                            | answered: ${answer}
                             `
                         }
                         else {
                             resDiv.classList.add('bg-danger')
-                            resDiv.innerHTML += `
+                            resDiv.innerHTML += `<br>
                             | correct answer: ${correctAnswer}
                             `
-                            resDiv.innerHTML += `
+                            resDiv.innerHTML += `<br>
                             | answered: ${answer}
                             `
                         }
@@ -162,6 +179,7 @@ const sendData = () => {
                 //const body = document.getElementsByTagName('BODY')[0]
                 ResultBox.append(resDiv)
             })
+
 
         },
         error: function (error) {
