@@ -83,15 +83,15 @@ body {
     text-align: center;
 }
 
-.quiz_edit {
-    left: 50%;
-    position: absolute;
-    top: 45%;
-    text-align: center;
-    transform: translate(-50%, -15%)
+
+
+.quiz_edit_header {
+    color: #fff;
+    font-size: 2.2rem;
+    line-height: 1.5;
 }
 
-.quiz_edit_header,
+
 .question_answer_edit_header {
     color: #fff;
     font-size: 2.2rem;

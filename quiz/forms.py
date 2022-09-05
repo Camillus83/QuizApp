@@ -5,7 +5,7 @@ from .models import Quiz, Question, Answer
 
 
 QuizQuestionsFormset = inlineformset_factory(
-    Quiz, Question, fields=("content",), extra=1, can_delete=True
+    Quiz, Question, fields=("content",), extra=9, can_delete=True
 )
 
 QuestionAnswerFormset = inlineformset_factory(
