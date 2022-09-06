@@ -101,9 +101,7 @@ class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Quiz.objects.all())
-        return super().post(
-            request, Quiz.id ** self.get_form_kwargs(), instance=self.object
-        )
+        return super().post(request, *args, **kwargs)
 
     def get_form(self, form_class=None):
         return QuizQuestionsFormset(**self.get_form_kwargs(), instance=self.object)
