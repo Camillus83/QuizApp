@@ -6,6 +6,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>{% block title %}Quiz App Homepage{% endblock title %}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
@@ -109,7 +110,6 @@
         crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="{% static 'js/base.js' %}"></script>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </body>
 
 </html>
