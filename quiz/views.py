@@ -63,6 +63,8 @@ class MyAttemptsListView(LoginRequiredMixin, ListView):
     model = Attempt
     template_name = "quiz/attempts_list.html"
     login_url = "account_login"
+    ordering = ["-attempt_date"]
+    paginate_by = 10
 
     def myattempts_queryset(self):
         query = self.request.GET.get("q")

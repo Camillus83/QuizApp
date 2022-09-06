@@ -3,50 +3,58 @@
 {% block title %}Quiz List | QuizApp{% endblock title %}
 
 {% block content %}
-
-<div class="question_answer_edit_header">
-    <h>Update Answers for question: {{question.content}}</h>
-</div>
-
-<div class="question_answer_edit">
-    <form action="" method="post" enctype="multipart/form-data">
-
-
-        {% csrf_token %}
-        {{ form.management_form }}
-        {{ form.non_form_errors }}
-        {% csrf_token %}
-        {{ form.instance.Question.content}}
-        {% for answer_form in form.forms %}
-        <hr>
-        <div class="card" style="width: 30rem;">
-            <div class="card-body">
-
-                <h>
-                    {% if answer_form.instance.id %}
-                    Answer #{{ forloop.counter }}
-                    {% else %}
-                    {% if form.forms|length > 1 %}
-                    Answer #{{ forloop.counter }}
-                    {% else %}
-                    Add Question
-                    {% endif %}
-                    {% endif %}
-                </h>
-                <table>
-                    {{ answer_form.as_table }}
-                </table>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="question_answer_edit_header">
+                <h>Update Answers for question: {{question.content}}</h>
             </div>
         </div>
-        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-3">
+            <div class="question_answer_edit">
+                <form action="" method="post" enctype="multipart/form-data">
 
-        <hr>
-        <p>
-            <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update Quiz</button>
-            <a href="{{ view.get_success_url }}" role="button" class="btn btn-secondary w-100">Cancel</a>
-        </p>
 
-    </form>
+                    {% csrf_token %}
+                    {{ form.management_form }}
+                    {{ form.non_form_errors }}
+                    {% csrf_token %}
+                    {{ form.instance.Question.content}}
+                    {% for answer_form in form.forms %}
+                    <hr>
+                    <div class="card" style="width: 30rem;">
+                        <div class="card-body">
+
+                            <h>
+                                {% if answer_form.instance.id %}
+                                Answer #{{ forloop.counter }}
+                                {% else %}
+                                {% if form.forms|length > 1 %}
+                                Answer #{{ forloop.counter }}
+                                {% else %}
+                                Add Question
+                                {% endif %}
+                                {% endif %}
+                            </h>
+                            <table>
+                                {{ answer_form.as_table }}
+                            </table>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <hr>
+                    <p>
+                        <button type="submit" value="Update quiz" class="btn btn-primary w-100 mb-3">Update
+                            Quiz</button>
+                        <a href="{{ view.get_success_url }}" role="button" class="btn btn-secondary w-100">Cancel</a>
+                    </p>
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock content %}
