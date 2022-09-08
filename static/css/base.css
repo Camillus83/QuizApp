@@ -83,7 +83,9 @@ body {
     text-align: center;
 }
 
-
+.quiz_edit {
+    margin-top: 50px;
+}
 
 .quiz_edit_header {
     color: #fff;

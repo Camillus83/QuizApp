@@ -38,7 +38,7 @@
                         <br>
                         Required score to pass: <b>{{ quiz.required_score_to_pass }}%</b>
                         <br>
-                        Number of questions:
+                        <!-- Number of questions: <b>{{ quiz.getNumberOfQuestions }}</b> -->
                     </div>
                     <div class="modal-footer justify-content-center">
                         <form id="logoutform" method="POST" action="{% url 'account_logout' %}">

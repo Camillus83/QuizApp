@@ -144,7 +144,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
     model = Quiz
     template_name = "quiz/quiz_create.html"
     context_object_name = "quiz"
-    fields = ("title", "short_description", "resolution_time", "number_of_questions")
+    fields = ("title", "short_description", "resolution_time")
     login_url = "account_login"
 
     def form_valid(self, form):
