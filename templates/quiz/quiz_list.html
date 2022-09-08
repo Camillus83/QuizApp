@@ -17,8 +17,42 @@
     <div class="card-body">
         <h5 class="card-title"> {{ quiz.short_description}}</h5>
         <p class="card-text">Author: {{ quiz.author }}</p>
-        <a href="{{ quiz.get_absolute_url_play }}" class="btn btn-primary">Attempt Quiz</a>
+        <!-- Modal button -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attemptModal">Attempt
+            Quiz</button>
+        <!-- Modal -->
+        <div class="modal fade" id="attemptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title w-100" id="logoutModal">Quiz Attempt</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to start <b>{{ quiz.title }}? </b>
+                        <br>
+                        Time to resolve: <b>{{ quiz.resolution_time }} minutes </b>
+                        <br>
+                        Required score to pass: <b>{{ quiz.required_score_to_pass }}%</b>
+                        <br>
+                        Number of questions:
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <form id="logoutform" method="POST" action="{% url 'account_logout' %}">
+                            <input type="hidden">
+                            <a href="{{ quiz.get_absolute_url_play }}" class="btn btn-primary">Yes</a>
+                            <button type="button" class="btn btn-danger mr-auto" data-dismiss="modal">No</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <a href="{{ quiz.get_absolute_url }}" class="btn btn-primary">Preview Quiz</a>
+
     </div>
 </div>
 <br>
