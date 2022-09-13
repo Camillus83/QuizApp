@@ -18,11 +18,11 @@
         <h5 class="card-title"> {{ quiz.short_description}}</h5>
         <p class="card-text">Author: {{ quiz.author }}</p>
         <!-- Modal button -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attemptModal">Attempt
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attemptModal{{quiz.pk}}">Attempt
             Quiz</button>
         <!-- Modal -->
-        <div class="modal fade" id="attemptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="attemptModal{{quiz.pk}}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header text-center">
