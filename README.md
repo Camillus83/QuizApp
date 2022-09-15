@@ -41,3 +41,13 @@ During the development of the application, I relied on the knowledge contained i
 [Materials provided by PyPlane](https://www.pyplane.com/)<br>
 
 ## Instructions
+### Heroku
+Visit ```https://vast-savannah-19196.herokuapp.com/```
+### Docker
+# Clone repo <br>
+``` git clone https://github.com/Camillus83/QuizApp ``` <br>
+``` cd quiz ``` <br>
+# Build <br>
+``` docker compose up --build ``` <br>
+# Checkout in browser <br>
+Visit http://127.0.0.1:8080/ in your browser
