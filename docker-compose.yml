@@ -20,6 +20,7 @@ services:
       - "DJANGO_SECURE_HSTS_PRELOAD=False"
       - "DJANGO_SESSION_COOKIE_SECURE=False"
       - "DJANGO_CSRF_COOKIE_SECURE=False"
+      - "QUIZ_APP_KEY=jkC22JuWzZpbwKujHHamA6LdyDBQ8yOfyOtBHhyr"
   db:
     image: postgres:13
     volumes:
