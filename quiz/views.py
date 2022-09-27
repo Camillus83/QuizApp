@@ -16,6 +16,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, JsonResponse
+import requests
+from django_project import settings
 
 
 class QuizListView(LoginRequiredMixin, ListView):
@@ -244,3 +246,50 @@ def save_quiz_view(request, pk):
 def quiz_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
     return render(request, "quiz/quiz.html", {"obj": quiz})
+
+
+def generate_questions_view(request, pk):
+    quiz = Quiz.objects.get(pk=pk)
+    results = {}
+    # if "keyword" in request.GET:
+    # keyword = request.GET["keyword"]
+    url = "https://quizapi.io/api/v1/questions"
+    payload = {
+        "limit": 2,
+        "category": "Linux",
+        "difficulty": "easy",
+    }
+    headers = {
+        "X-Api-Key": settings.QUIZ_APP_KEY,
+        "Accept": "application/json",
+        "User-Agent": "twoj stary alkus",
+    }
+    quiz_request = requests.get(url, params=payload, headers=headers)
+    # esponse = requests.get(url)
+    r_status = quiz_request.status_code
+    r_content = quiz_request.content
+
+    print("success")
+    data = quiz_request.json()
+    print(data)
+
+    for rec in data:
+        print(rec)
+        print(rec["question"])
+        q = Question.objects.create(
+            quiz=quiz,
+            content=rec["question"],
+        )
+        q.save()
+        for ans in rec["answers"].items():
+            if isinstance(ans[1], str):
+                a = Answer.objects.create(
+                    question=q,
+                    content=ans[1],
+                )
+                a.save()
+            print(ans[1])
+        print("endofloop")
+    print(r_status)
+
+    return render(request, "quiz/generate_questions.html")

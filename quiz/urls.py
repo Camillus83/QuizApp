@@ -13,6 +13,7 @@ from .views import (
     quiz_data_view,
     quiz_view,
     save_quiz_view,
+    generate_questions_view,
 )
 
 urlpatterns = [
@@ -36,13 +37,18 @@ urlpatterns = [
         name="quiz_questions_edit",
     ),
     path(
+        "edit/questions/<uuid:pk>/generate",
+        generate_questions_view,
+        name="question_generate",
+    ),
+    path(
         "edit/<uuid:pk>/", QuizUpdateView.as_view(), name="quiz_edit"
     ),  # View where author can change Title/Short Description/Resolution Time/Number of questions of Quiz.
     path(
         "delete/<uuid:pk>/", QuizDeleteView.as_view(), name="quiz_delete"
     ),  # View where author can delete quiz.
     path(
-        "edit/answer/<uuid:pk>",
+        "edit/answer/<uuid:pk>/",
         QuestionAnswerView.as_view(),  # View where author can change Answers related to Question.
         name="question_answer_edit",
     ),

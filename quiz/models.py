@@ -48,6 +48,9 @@ class Quiz(models.Model):
     def get_absolute_url_play(self):
         return reverse("quiz_play", args=[str(self.id)])
 
+    def get_absolute_url_generate_questions(self):
+        return reverse("question_generate", args=[str(self.id)])
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(
@@ -63,7 +66,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    content = models.CharField(max_length=255)
+    content = models.CharField(max_length=255, default="")
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
