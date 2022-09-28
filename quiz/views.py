@@ -267,7 +267,7 @@ def generate_questions_view(request, pk):
         params = {
             "limit": limit,
             "category": keyword,
-            "difficulty": difficulty,
+            # "difficulty": difficulty,
         }
         headers = {
             "X-Api-Key": settings.QUIZ_APP_KEY,
@@ -276,15 +276,11 @@ def generate_questions_view(request, pk):
         }
         quiz_request = requests.get(url, params=params, headers=headers)
         data = quiz_request.json()
-        """
-        If user uses a keyword, which didn't exists in QuizAPI.io, in the returned
-        json will be only dictionary with error. If it happens it shouldn't try to 
-        create new objects
-        TODO:
-        Generate modal or sth which will inform about no results.
-        """
         if list(data)[0] == "error":
-            return render(request, "quiz/generate_questions.html")
+            context = {
+                "keyword": keyword,
+            }
+            return render(request, "quiz/generate_questions.html", context)
 
         if quiz_request.status_code == 200:
             for rec in data:

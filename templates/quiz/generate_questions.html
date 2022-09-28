@@ -6,6 +6,17 @@
 
 <div class="container">
     <br>
+    {% if keyword %}
+    <div class="alert alert-warning" role="alert">
+        No results for {{keyword}} keyword. Sorry :(
+    </div>
+    <a href="#Foo" class="btn btn-warning" data-toggle="collapse"> Click to see which quiz categories QuizAPI.io
+        provides.</a>
+    <div id="Foo" class="collapse">
+        PHP | Docker | BASH | Linux | MySQL | HTML | JavaScript | Kubernetes
+    </div>
+    {% endif %}
+
     <h2 class="text-center">Enter a keyword</h2>
     <br>
     <form method="GET">
