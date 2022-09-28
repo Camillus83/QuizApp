@@ -248,48 +248,65 @@ def quiz_view(request, pk):
     return render(request, "quiz/quiz.html", {"obj": quiz})
 
 
+"""
+View which handles QuizAPI.io connection,
+the logic will be executed when form with keyword, limit and difficulty
+will be submitted.
+The PK param is a quiz personal key.
+"""
+
+
 def generate_questions_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
     results = {}
-    # if "keyword" in request.GET:
-    # keyword = request.GET["keyword"]
-    url = "https://quizapi.io/api/v1/questions"
-    payload = {
-        "limit": 2,
-        "category": "Linux",
-        "difficulty": "easy",
-    }
-    headers = {
-        "X-Api-Key": settings.QUIZ_APP_KEY,
-        "Accept": "application/json",
-        "User-Agent": "twoj stary alkus",
-    }
-    quiz_request = requests.get(url, params=payload, headers=headers)
-    # esponse = requests.get(url)
-    r_status = quiz_request.status_code
-    r_content = quiz_request.content
+    if request.GET:
+        keyword = request.GET["keyword"]
+        limit = request.GET["limit"]
+        difficulty = request.GET["difficulty"]
+        url = "https://quizapi.io/api/v1/questions"
+        params = {
+            "limit": limit,
+            "category": keyword,
+            "difficulty": difficulty,
+        }
+        headers = {
+            "X-Api-Key": settings.QUIZ_APP_KEY,
+            "Accept": "application/json",
+            "User-Agent": request.META["HTTP_USER_AGENT"],
+        }
+        quiz_request = requests.get(url, params=params, headers=headers)
+        data = quiz_request.json()
+        """
+        If user uses a keyword, which didn't exists in QuizAPI.io, in the returned
+        json will be only dictionary with error. If it happens it shouldn't try to 
+        create new objects
+        TODO:
+        Generate modal or sth which will inform about no results.
+        """
+        if list(data)[0] == "error":
+            return render(request, "quiz/generate_questions.html")
 
-    print("success")
-    data = quiz_request.json()
-    print(data)
-
-    for rec in data:
-        print(rec)
-        print(rec["question"])
-        q = Question.objects.create(
-            quiz=quiz,
-            content=rec["question"],
-        )
-        q.save()
-        for ans in rec["answers"].items():
-            if isinstance(ans[1], str):
-                a = Answer.objects.create(
-                    question=q,
-                    content=ans[1],
+        if quiz_request.status_code == 200:
+            for rec in data:
+                print(rec)
+                print(rec["question"])
+                q = Question.objects.create(
+                    quiz=quiz,
+                    content=rec["question"],
                 )
-                a.save()
-            print(ans[1])
-        print("endofloop")
-    print(r_status)
+                q.save()
+                for ans in rec["answers"].items():
+                    if isinstance(ans[1], str):
+                        a = Answer.objects.create(
+                            question=q,
+                            content=ans[1],
+                        )
+                        print(ans[1])
+                        if rec["correct_answers"][ans[0] + "_correct"] == "true":
+                            a.is_correct = True
+                        a.save()
+            return HttpResponseRedirect(
+                reverse("quiz_questions_edit", kwargs={"pk": pk})
+            )
 
     return render(request, "quiz/generate_questions.html")
