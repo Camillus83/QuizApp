@@ -108,3 +108,30 @@ ul {
 .not-visible {
     display: none;
 }
+
+.generate-questions {
+    margin-top: 50px;
+}
+
+.col-xs-2,
+.generate-submit-button {
+    margin-top: 7.5px;
+}
+
+.generate-submit-button {
+    margin-left: 70px;
+}
+
+.question-generate-form {
+    margin-top: 20px;
+}
+
+.keyword-info {
+    text-align: center;
+}
+
+.quiz-categories {
+    color: rgb(209, 209, 209);
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
