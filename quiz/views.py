@@ -25,6 +25,7 @@ class QuizListView(LoginRequiredMixin, ListView):
     template_name = "quiz/quiz_list.html"
     context_object_name = "quiz_list"
     login_url = "account_login"
+    queryset = Quiz.objects.filter(is_public=True)
 
 
 class QuizDetailView(LoginRequiredMixin, DetailView):
@@ -77,7 +78,7 @@ class QuizUpdateView(LoginRequiredMixin, UpdateView):
     model = Quiz
     template_name = "quiz/quiz_edit.html"
     context_object_name = "quiz"
-    fields = ("title", "short_description", "resolution_time", "number_of_questions")
+    fields = ("title", "short_description", "resolution_time", "is_public")
 
     def get_success_url(self):
         return reverse_lazy("my_quiz")
@@ -146,7 +147,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
     model = Quiz
     template_name = "quiz/quiz_create.html"
     context_object_name = "quiz"
-    fields = ("title", "short_description", "resolution_time")
+    fields = ("title", "short_description", "resolution_time", "is_public")
     login_url = "account_login"
 
     def form_valid(self, form):

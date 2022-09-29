@@ -16,9 +16,4 @@ QuestionAnswerFormset = inlineformset_factory(
 class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
-        fields = [
-            "title",
-            "short_description",
-            "resolution_time",
-            "number_of_questions",
-        ]
+        fields = ["title", "short_description", "resolution_time", "is_public"]
