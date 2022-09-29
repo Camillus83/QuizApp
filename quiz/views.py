@@ -267,7 +267,7 @@ def generate_questions_view(request, pk):
         params = {
             "limit": limit,
             "category": keyword,
-            # "difficulty": difficulty,
+            "difficulty": difficulty,
         }
         headers = {
             "X-Api-Key": settings.QUIZ_APP_KEY,
@@ -275,6 +275,11 @@ def generate_questions_view(request, pk):
             "User-Agent": request.META["HTTP_USER_AGENT"],
         }
         quiz_request = requests.get(url, params=params, headers=headers)
+        print("status code: " + str(quiz_request.status_code))
+        if quiz_request.status_code == 401:
+            context = {"error": "401"}
+            return render(request, "quiz/generate_questions.html", context)
+
         data = quiz_request.json()
         if list(data)[0] == "error":
             context = {

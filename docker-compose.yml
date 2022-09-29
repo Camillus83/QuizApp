@@ -21,6 +21,7 @@ services:
       - "DJANGO_SESSION_COOKIE_SECURE=False"
       - "DJANGO_CSRF_COOKIE_SECURE=False"
       - "QUIZ_APP_KEY=jkC22JuWzZpbwKujHHamA6LdyDBQ8yOfyOtBHhyr"
+      #- "QUIZ_APP_KEY=EXAMPLE_API_KEY"
   db:
     image: postgres:13
     volumes:

@@ -5,6 +5,26 @@
 {% block content %}
 <div class="generate-questions">
     <div class="container-fluid">
+        {% if error %}
+        <div class="row">
+            <div class="col-md-8 offset-md-3">
+                <div class="401-error">
+                    <div class="keyword-info">
+                        <div class="alert alert-danger" role="alert" style="width: 36rem">
+                            Oops! Unauthorized request. Sorry :( Fetch an api key from <a
+                                href="https://quizapi.io/register">QuizAPI.io</a> and paste it to the docker-compose.yml
+                            file.
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+
         {% if keyword %}
         <div class="row">
             <div class="col-md-8 offset-md-3">
