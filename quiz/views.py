@@ -231,13 +231,15 @@ def save_quiz_view(request, pk):
                 results.append({str(q): "not answered"})
 
         score_ = score * multiplier
-        Attempt.objects.create(quiz=quiz, user=user, score=score_)
+        attempt = Attempt.objects.create(quiz=quiz, user=user, score=score_)
 
-        if score_ >= quiz.required_score_to_pass:
+        if score_ * multiplier >= quiz.required_score_to_pass:
+            attempt.has_passed = True
+            attempt.save()
             return JsonResponse(
                 {"passed": True, "score": score_, "attempt_details": results}
             )
-        if score_ < quiz.required_score_to_pass:
+        if score_ * multiplier < quiz.required_score_to_pass:
             return JsonResponse(
                 {"passed": False, "score": score_, "attempt_details": results}
             )
@@ -289,8 +291,6 @@ def generate_questions_view(request, pk):
 
         if quiz_request.status_code == 200:
             for rec in data:
-                print(rec)
-                print(rec["question"])
                 q = Question.objects.create(
                     quiz=quiz,
                     content=rec["question"],
