@@ -1,21 +1,25 @@
 # QuizApp
-Online Quiz application based on Django, for Frontend I've used Bootstrap 4.
+Web application which let users to create own Quiz or take existing one right in the browser.
+User Can create their own quizzes, with their own questions and answers. If quiz settings are public, anyone can take part in it.
+Users can compete against each other by comparing points earned from a given quiz.
 
 ## Current Features
 ### Site Access
 <ul>
-<li> Creating user accounts/login with GitHub. For simplify the authentication is not implented, user can create an account on fake email.
+<li> Creating user accounts/login with GitHub. For simplify the authentication is not included. User should create an accounts on fake emails.
 <li> Every quiz can be accessed only if the user is logged in.
 </ul>
+
 ### Quiz 
 <ul>
 <li> Every logged in user can create his own quiz or take an existing quiz. 
 <li> Quiz creating/edit section is based in My Quizes section. Quiz attempting/preview is based in All Quizes section.
 <li> While creating new quiz user can set title, short description, percentage required to pass and max time to resolve.
-<li> User can add questions and answers in my Quizes section. Question can have multiple correct answers.
+<li> User can add questions and answers in my Quizes section. Questions can have multiple correct answers.
 <li> Every quiz attempt has an timer, while timer stops answers will be automatically saved.
 <li> After completing quiz, app will shown informations about passing and every question with answer.
 <li> User can check his Quiz Attempts in My Attempts section.
+<li> Users can generate questions based on quiz category via Quizapi.io.
 </ul>
 
 ## Future Features
