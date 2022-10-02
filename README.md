@@ -1,7 +1,8 @@
 # QuizApp
 Web application which let users to create own Quiz or take existing one right in the browser.
-User Can create their own quizzes, with their own questions and answers. If quiz settings are public, anyone can take part in it.
-Users can compete against each other by comparing points earned from a given quiz.
+Questions and answers Can be generated manually or by external quizapi.io API. 
+
+
 
 ## Current Features
 ### Site Access
