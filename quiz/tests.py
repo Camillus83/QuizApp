@@ -141,3 +141,131 @@ class QuizTest(TestCase):
             "%s?next=/quiz/%s" % (reverse("account_login"), self.quiz.pk)
         )
         self.assertContains(response, "Login")
+
+    def test_my_quizzes_for_logged_in_user(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz.get_absolute_url_my_quizes())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "quiz/my_quizes.html")
+
+        self.assertContains(response, self.quiz.title)
+        self.assertContains(response, self.quiz.author)
+        self.assertContains(response, self.quiz.short_description)
+        self.assertContains(response, self.quiz.resolution_time)
+
+        self.assertNotContains(response, self.quiz_2.title)
+        self.assertNotContains(response, self.quiz_2.author)
+        self.assertNotContains(response, self.quiz_2.short_description)
+
+    def test_edit_quiz_for_logged_in_author(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz.get_absolute_url_edit())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "quiz/quiz_edit.html")
+
+        self.assertContains(response, self.quiz.title)
+        self.assertContains(response, self.quiz.short_description)
+        self.assertContains(response, self.quiz.resolution_time)
+
+    """FIX ITTTTTTTTTTTT!"""
+
+    def test_edit_quiz_for_user_who_isnt_author(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz_2.get_absolute_url_edit())
+        self.assertEqual(response.status_code, 403)
+
+    def test_edit_quiz_for_logged_out_user(self):
+        self.client.logout()
+        response = self.client.get(self.quiz.get_absolute_url_edit())
+        no_response = self.client.get("/quiz/123")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertRedirects(
+            response,
+            "%s?next=/quiz/edit/%s/" % (reverse("account_login"), self.quiz.pk),
+        )
+        response = self.client.get(
+            "%s?next=/quiz/edit/%s/" % (reverse("account_login"), self.quiz.pk)
+        )
+        self.assertContains(response, "Login")
+
+    """ QUESTIONS EDIT """
+
+    def test_edit_quiz_questions_for_logged_in_author(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz.get_absolute_url_questions_edit())
+        no_response = self.client.get("/quiz/123")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertTemplateUsed("quiz_questions_edit.html")
+        self.assertContains(response, self.question)
+        self.assertNotContains(response, self.question_q2)
+
+    def test_edit_quiz_questions_for_user_who_isnt_author(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz_2.get_absolute_url_questions_edit())
+        self.assertEqual(response.status_code, 403)
+
+    def test_edit_quiz_questions_for_logged_out_user(self):
+        self.client.logout()
+        response = self.client.get(self.quiz.get_absolute_url_edit())
+        no_response = self.client.get("/quiz/123")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertRedirects(
+            response,
+            "%s?next=/quiz/edit/%s/" % (reverse("account_login"), self.quiz.pk),
+        )
+        response = self.client.get(
+            "%s?next=/quiz/%s/" % (reverse("account_login"), self.quiz.pk)
+        )
+        self.assertContains(response, "Login")
+
+    """  ANSWERS EDIT"""
+
+    def test_edit_question_answers_for_logged_in_quiz_author(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get("/quiz/edit/answer/%s/" % self.question.pk)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "quiz/question_answer_edit.html")
+        self.assertContains(response, self.correctanswer)
+        self.assertContains(response, self.wronganswer)
+
+    def test_edit_question_answers_for_logged_in_user_who_isnt_author(self):
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get("/quiz/edit/answer/%s/" % self.question_q2.pk)
+        self.assertEqual(response.status_code, 403)
+
+    def test_edit_question_answers_for_logged_out_user(self):
+        self.client.logout()
+        response = self.client.get(self.quiz.get_absolute_url_edit())
+        no_response = self.client.get("/quiz/123")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertRedirects(
+            response,
+            "%s?next=/quiz/edit/%s/" % (reverse("account_login"), self.quiz.pk),
+        )
+        response = self.client.get(
+            "%s?next=/quiz/%s/" % (reverse("account_login"), self.quiz.pk)
+        )
+        self.assertContains(response, "Login")
+
+    """ QUIZ DELETE"""
+
+    def test_quiz_delete_for_logged_in_author(self):
+        pass
+
+    def test_quiz_delete_for_logged_in_another_user(self):
+        pass
+
+    def test_quiz_delete_for_logged_out_user(self):
+        pass
+
+    """ TAKE AN ATTEMPT """
+
+    def test_quiz_attempt_for_logged_in_user(self):
+        pass
+
+    def test_quiz_attempt_for_logged_out_user(self):
+        pass
