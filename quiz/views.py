@@ -18,6 +18,7 @@ from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, JsonResponse
 import requests
 from django_project import settings
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class QuizListView(LoginRequiredMixin, ListView):
@@ -74,29 +75,42 @@ class MyAttemptsListView(LoginRequiredMixin, ListView):
         return Attempt.objects.filter(Q(user__username__icontains=query))
 
 
-class QuizUpdateView(LoginRequiredMixin, UpdateView):
+class QuizUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Quiz
     template_name = "quiz/quiz_edit.html"
     context_object_name = "quiz"
     fields = ("title", "short_description", "resolution_time", "is_public")
 
+    def test_func(self):
+        return self.get_object().author == self.request.user
+
     def get_success_url(self):
         return reverse_lazy("my_quiz")
 
 
-class QuizDeleteView(LoginRequiredMixin, DeleteView):
+class QuizDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Quiz
     template_name = "quiz/quiz_delete.html"
     context_object_name = "quiz"
     success_url = reverse_lazy("my_quiz")
 
+    def test_func(self):
+        return self.get_object().author == self.request.user
 
-class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
+
+class QuizQuestionsUpdateView(
+    UserPassesTestMixin, LoginRequiredMixin, SingleObjectMixin, FormView
+):
 
     model = Quiz
     template_name = "quiz/quiz_questions_edit.html"
     success_url = reverse_lazy("my_quiz")
     login_url = "account_login"
+
+    def test_func(self):
+        print(self.get_object())
+        print(self.request.user)
+        return self.get_object().author == self.request.user
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Quiz.objects.all())
@@ -117,10 +131,17 @@ class QuizQuestionsUpdateView(LoginRequiredMixin, SingleObjectMixin, FormView):
         return reverse_lazy("my_quiz")
 
 
-class QuestionAnswerView(LoginRequiredMixin, SingleObjectMixin, FormView):
+class QuestionAnswerView(
+    UserPassesTestMixin, LoginRequiredMixin, SingleObjectMixin, FormView
+):
     model = Question
     template_name = "quiz/question_answer_edit.html"
     login_url = "account_login"
+
+    def test_func(self):
+        print(self.get_object())
+        print(self.request.user)
+        return self.get_object().quiz.author == self.request.user
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Question.objects.all())
