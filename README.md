@@ -45,14 +45,14 @@ During the development of the application, I relied on the knowledge contained i
 [Django for Proffesionals - William S. Vincent](https://djangoforprofessionals.com/)<br>
 [Materials provided by PyPlane](https://www.pyplane.com/)<br>
 
-## Instructions
-### Heroku
-Visit ```https://vast-savannah-19196.herokuapp.com/```
-### Docker
-# Clone repo <br>
+### Instructions 
+# Heroku
+Just visit https://vast-savannah-19196.herokuapp.com/ in your browser.
+# Local Run
+Clone repo <br>
 ``` git clone https://github.com/Camillus83/QuizApp ``` <br>
-``` cd quiz ``` <br>
-# Build <br>
+``` cd ./quiz/quiz-project ``` <br>
+Build <br>
 ``` docker compose up --build ``` <br>
-# Checkout in browser <br>
+Checkout in browser <br>
 Visit http://127.0.0.1:8080/ in your browser
