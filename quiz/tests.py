@@ -254,18 +254,46 @@ class QuizTest(TestCase):
     """ QUIZ DELETE"""
 
     def test_quiz_delete_for_logged_in_author(self):
-        pass
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz.get_absolute_url_delete())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "quiz/quiz_delete.html")
 
     def test_quiz_delete_for_logged_in_another_user(self):
-        pass
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz_2.get_absolute_url_delete())
+        self.assertEqual(response.status_code, 403)
 
     def test_quiz_delete_for_logged_out_user(self):
-        pass
+        self.client.logout()
+        response = self.client.get(self.quiz.get_absolute_url_delete())
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            "%s?next=/quiz/delete/%s/" % (reverse("account_login"), self.quiz.pk),
+        )
+        response = self.client.get(
+            "%s?next=/quiz/delete/%s/" % (reverse("account_login"), self.quiz.pk)
+        )
+        self.assertContains(response, "Login")
 
     """ TAKE AN ATTEMPT """
 
     def test_quiz_attempt_for_logged_in_user(self):
-        pass
+        self.client.login(email="quizmaker@email.com", password="testpass123")
+        response = self.client.get(self.quiz.get_absolute_url_play())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "quiz/quiz.html")
 
     def test_quiz_attempt_for_logged_out_user(self):
-        pass
+        self.client.logout()
+        response = self.client.get(self.quiz.get_absolute_url_play())
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            "%s?next=/quiz/play/%s" % (reverse("account_login"), self.quiz.pk),
+        )
+        response = self.client.get(
+            "%s?next=/quiz/play/%s" % (reverse("account_login"), self.quiz.pk)
+        )
+        self.assertContains(response, "Login")

@@ -19,6 +19,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 import requests
 from django_project import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 
 
 class QuizListView(LoginRequiredMixin, ListView):
@@ -267,6 +268,7 @@ def save_quiz_view(request, pk):
             )
 
 
+@login_required
 def quiz_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
     return render(request, "quiz/quiz.html", {"obj": quiz})
@@ -280,6 +282,7 @@ The PK param is a quiz personal key.
 """
 
 
+@login_required
 def generate_questions_view(request, pk):
     quiz = Quiz.objects.get(pk=pk)
     results = {}
