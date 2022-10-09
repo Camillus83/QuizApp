@@ -22,6 +22,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 
 
+
 class QuizListView(LoginRequiredMixin, ListView):
     model = Quiz
     template_name = "quiz/quiz_list.html"
